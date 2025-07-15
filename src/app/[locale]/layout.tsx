@@ -10,6 +10,7 @@ import { generateMetadataObject } from '@/lib/metadata';
 import Navigation from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 import { cn } from '@/lib/utils'
+import { LayoutProvider } from '@/content/LayoutContext';
 
 type Props = {
     children: ReactNode;
@@ -24,11 +25,11 @@ export function generateStaticParams() {
 
 export async function generateMetadata(props: Omit<Props, 'children'>) {
     const { locale } = await props.params;
-    const globalApi = strapiClient.single('global');
+    const layoutApi = strapiClient.single('layout');
     try {
-        const { data } = await globalApi.find({
+        const { data } = await layoutApi.find({
             locale: locale,
-            populate: 'seo.metaImage',
+            populate: 'seo',
         });
         return generateMetadataObject(data?.seo);
     } catch (error) {
@@ -44,8 +45,8 @@ export default async function LocaleLayout({ children, params }: Props) {
         notFound();
     }
     setRequestLocale(locale);
-    const globalApi = strapiClient.single('global');
-    const { data } = await globalApi.find({
+    const layoutApi = strapiClient.single('layout');
+    const { data } = await layoutApi.find({
         locale: locale,
         populate: 'all',
     });
@@ -54,14 +55,20 @@ export default async function LocaleLayout({ children, params }: Props) {
             <ViewTransitions>
                 <body className={cn(inter.className, 'bg-white antialiased h-full w-full')}>
                     <NextIntlClientProvider>
-                        <Navigation
-                            leftNavbarItems={data?.navbar.left_navbar_items}
-                            rightNavbarItems={data?.navbar.right_navbar_items}
-                            logo={data?.navbar.logo}
-                            dropmenu={data?.dropmenu}
-                        />
-                        {children}
-                        <Footer data={data?.footer} />
+                        <LayoutProvider>
+                            <Navigation
+                                leftNavBar={data?.navbar.leftNavBar}
+                                rightNavBar={data?.navbar.rightNavBar}
+                                logo={data?.navbar.logo}
+                            />    
+                            {children}
+                            <Footer 
+                                logo={data.footer.logo} 
+                                description={data.footer.description}
+                                copyright={data.footer.copyright}
+                                menu={data.footer.menu}
+                            />
+                        </LayoutProvider>
                     </NextIntlClientProvider>
                 </body>
             </ViewTransitions>

@@ -7,8 +7,7 @@ if (!baseURL) {
 }
 
 export const strapiClient = strapi({
-    baseURL: baseURL + '/api',
-    auth: process.env.API_TOKEN,
+    baseURL: baseURL + '/api'
 });
 
 

@@ -4,5 +4,5 @@ export const host = process.env.VERCEL_PROJECT_PRODUCTION_URL
   : `http://localhost:${port}`;
 
 import {Locale} from 'next-intl';
-export const locales = ['en', 'de'] as const;
-export const defaultLocale: Locale = 'en';
+export const locales = ['en', 'zh-Hans'] as const;
+export const defaultLocale: Locale = 'zh-Hans';

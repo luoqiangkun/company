@@ -1,9 +1,9 @@
 import { Locale } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { strapiClient } from '@/lib/strapiClient';
+import Article from '@/components/Article';
 import { generateMetadataObject } from '@/lib/metadata';
-import DynamicZone from '@/components/DynamicZone'
-import LayoutSetter from '@/components/LayoutSetter';
+import { IImage } from '@/lib/type';
 type Props = {
     params: Promise<{ locale: Locale }>;
 };
@@ -15,7 +15,7 @@ export async function generateMetadata(props: Omit<Props, 'children'>) {
         const result = await pageApi.find({
             locale: locale,
             filters: {
-                slug: 'homepage'
+                slug: 'article'
             },
             populate: "seo",
         });
@@ -27,26 +27,38 @@ export async function generateMetadata(props: Omit<Props, 'children'>) {
     }
 }
 
-export default async function IndexPage({ params }: Props) {
+export default async function ArticlePage({ params }: Props) {
     const { locale } = await params;
     setRequestLocale(locale);
     const pageApi = strapiClient.collection('pages');
+    const articleApi = strapiClient.collection('articles');
+    const categoryApi = strapiClient.collection('categories');
+
     try {
-        const result = await pageApi.find({
+        const page = await pageApi.find({
             locale: locale,
-            populate: 'all',
             filters: {
-                slug: 'homepage'
-            }
+                slug: 'article'
+            },
+            populate: 'all'
         });
-        const data = result?.data[0];
-        console.log( data )
-        return data ? (
-            <>
-                <LayoutSetter layout='index'/>
-                <DynamicZone data={data?.content}></DynamicZone>
-            </>
-        ) : (<></>);
+
+        const image = page.data[0].content.filter( item => item['__component'] == 'shared.image')[0];
+        const { data } = await articleApi.find({
+            locale: locale,
+            populate: 'all'
+        });
+
+        const categories = await categoryApi.find({
+            locale: locale,
+            populate: 'all'
+        });
+
+        const category = categories.data? categories.data: [];
+        
+        return (
+            <Article image={image} data={data} category={category}/>
+        )
     } catch (error) {
         console.log( error )
         //edirect('/en');

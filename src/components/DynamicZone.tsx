@@ -1,4 +1,4 @@
-
+'use client';
 import React from 'react';
 import dynamic from 'next/dynamic';
 
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const componentMapping: { [key: string]: any } = {
-    'dynamic-zone.banner': dynamic(
+    'shared.image': dynamic(
         () => import('./Banner').then((mod) => mod.Banner),
         { ssr: true }
     ),
