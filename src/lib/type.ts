@@ -37,5 +37,6 @@ export interface IArticle {
     description: string;
     image: IImage;
     content: string;
-    category?: IText
+    category?: IText;
+    publishedAt: string;
 }

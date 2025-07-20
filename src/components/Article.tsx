@@ -1,7 +1,9 @@
 import { IArticle, ILinkImage } from '@/lib/type';
 import Image from 'next/image';
+import striptags from 'striptags';
 import { strapiImage } from '@/lib/strapiImage';
 import { Link } from '@/i18n/navigation';
+import { it } from 'node:test';
 
 type Category = {
     id: Number;
@@ -16,6 +18,16 @@ type Props = {
 
 export const Article = ({ image, data, category }: Props) => {
     let article = data[0];
+
+    const formatDate = (isoString: string): string => {
+        const date = new Date(isoString)
+        const month = date.getMonth() + 1 // 月份是从 0 开始的
+        const day = date.getDate()
+        const year = date.getFullYear()
+        return `${month}月${day}，${year}`
+    }
+
+
     return (
         <div className="max-w-7xl mt-14 px-4 mx-auto lg:mt-18">
             <section className="pt-6 bg-white lg:pt-8 mx-auto dark:bg-gray-900">
@@ -39,7 +51,7 @@ export const Article = ({ image, data, category }: Props) => {
                         <div className="flex space-x-2 items-center">
                             <p className="text-sm uppercase">{article.category?.text} /</p>
                             <p className="text-neutral-500 text-sm max-w-xl group-hover:text-white transition duration-200">
-                                September 11, 2024
+                                {formatDate(article.publishedAt)}
                             </p>
                         </div>
                         <div>
@@ -47,8 +59,8 @@ export const Article = ({ image, data, category }: Props) => {
                                {article.title}
                             </p>
 
-                            <p className="text-sm text-muted md:text-base md:mt-2">
-                                {article.description}
+                            <p className="text-sm text-muted line-clamp-2 md:text-base md:mt-2 md:line-clamp-8">
+                                {striptags(article.content)}
                             </p>
                         </div>
 
@@ -80,18 +92,17 @@ export const Article = ({ image, data, category }: Props) => {
 
                                 <div className="mt-2 flex flex-col justify-between">
                                     <p className="text-lg font-semibold text-gray-800 hover:underline dark:text-white md:text-xl md:mt-2">
-                                        Not a Guide to Integrating Strapi
+                                       {item.title}
                                     </p>
-                                    <p className="text-sm text-muted md:text-base md:mt-2">
-                                        Looking to streamline your content your
-                                        your
+                                    <p className="text-sm text-muted line-clamp-2 md:text-base md:mt-2">
+                                       {striptags(item.content)}
                                     </p>
                                     <div className="flex space-x-2 items-cente md:mt-2">
                                         <p className="text-sm  uppercase">
-                                            category /
+                                            {item.category?.text}  /
                                         </p>
                                         <p className="text-neutral-500 text-sm max-w-xl group-hover:text-white transition duration-200">
-                                            September 11, 2024
+                                            {formatDate(item.publishedAt)}
                                         </p>
                                     </div>
                                 </div>

@@ -261,7 +261,7 @@ export default function MobileNavigation({
                                                         'shared.menu' ? (
                                                         <div
                                                             key={menu.id}
-                                                            className="pl-4 py-2 first:mt-2 last:pt-0"
+                                                            className="pl-4 py-2 first:mt-2 last:pb-0"
                                                             onClick={() => {
                                                                 handleMenu(
                                                                     menu.id
@@ -313,7 +313,7 @@ export default function MobileNavigation({
                                                                         ) => {
                                                                             return (
                                                                                 <Link
-                                                                                    className="block py-2 first:mt-2 last:pt-0"
+                                                                                    className="block py-2 first:mt-2 last:pb-0"
                                                                                     key={`link-${link.id}`}
                                                                                     target={
                                                                                         link.target
