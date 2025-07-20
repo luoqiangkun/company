@@ -3,7 +3,6 @@ import { setRequestLocale } from 'next-intl/server';
 import { strapiClient } from '@/lib/strapiClient';
 import { generateMetadataObject } from '@/lib/metadata';
 import DynamicZone from '@/components/DynamicZone'
-import LayoutSetter from '@/components/LayoutSetter';
 type Props = {
     params: Promise<{ locale: Locale }>;
 };
@@ -43,7 +42,6 @@ export default async function IndexPage({ params }: Props) {
         console.log( data )
         return data ? (
             <>
-                <LayoutSetter layout='index'/>
                 <DynamicZone data={data?.content}></DynamicZone>
             </>
         ) : (<></>);

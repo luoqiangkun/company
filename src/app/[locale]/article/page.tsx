@@ -4,6 +4,7 @@ import { strapiClient } from '@/lib/strapiClient';
 import Article from '@/components/Article';
 import { generateMetadataObject } from '@/lib/metadata';
 import { IImage } from '@/lib/type';
+import LayoutSetter from '@/components/LayoutSetter';
 type Props = {
     params: Promise<{ locale: Locale }>;
 };
@@ -57,7 +58,7 @@ export default async function ArticlePage({ params }: Props) {
         const category = categories.data? categories.data: [];
         
         return (
-            <Article image={image} data={data} category={category}/>
+           <Article image={image} data={data} category={category}/>
         )
     } catch (error) {
         console.log( error )

@@ -6,13 +6,10 @@ type Props = {
     layout: string;
 };
 
-export default function LayoutSetter({ layout }: Props ) {
-    if(layout){
-        const { setLayout } = useLayout();
-        useEffect(() => {
-            setLayout(layout);
-            return () => setLayout('default'); 
-        }, []);
-    }
-    return <></>;
+export default function LayoutSetter({ layout }: Props) {
+    const { setLayout } = useLayout();
+    useEffect(() => {
+        setLayout(layout);
+    }, [layout, setLayout]);
+    return null;
 }

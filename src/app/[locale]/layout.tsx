@@ -9,8 +9,7 @@ import { strapiClient } from '@/lib/strapiClient';
 import { generateMetadataObject } from '@/lib/metadata';
 import Navigation from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
-import { cn } from '@/lib/utils'
-import { LayoutProvider } from '@/content/LayoutContext';
+import { cn } from '@/lib/utils';
 
 type Props = {
     children: ReactNode;
@@ -53,22 +52,25 @@ export default async function LocaleLayout({ children, params }: Props) {
     return (
         <html className="h-full" lang={locale}>
             <ViewTransitions>
-                <body className={cn(inter.className, 'bg-white antialiased h-full w-full')}>
+                <body
+                    className={cn(
+                        inter.className,
+                        'bg-white antialiased h-full w-full'
+                    )}
+                >
                     <NextIntlClientProvider>
-                        <LayoutProvider>
-                            <Navigation
-                                leftNavBar={data?.navbar.leftNavBar}
-                                rightNavBar={data?.navbar.rightNavBar}
-                                logo={data?.navbar.logo}
-                            />    
-                            {children}
-                            <Footer 
-                                logo={data.footer.logo} 
-                                description={data.footer.description}
-                                copyright={data.footer.copyright}
-                                menu={data.footer.menu}
-                            />
-                        </LayoutProvider>
+                        <Navigation
+                            leftNavBar={data?.navbar.leftNavBar}
+                            rightNavBar={data?.navbar.rightNavBar}
+                            logo={data?.navbar.logo}
+                        />
+                        {children}
+                        <Footer
+                            logo={data.footer.logo}
+                            description={data.footer.description}
+                            copyright={data.footer.copyright}
+                            menu={data.footer.menu}
+                        />
                     </NextIntlClientProvider>
                 </body>
             </ViewTransitions>

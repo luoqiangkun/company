@@ -5,7 +5,7 @@ export interface IImage {
 
 export interface ILink {
     id: number;
-    href: string;
+    URL: string;
     target?: string;
     text: string;
 }
@@ -24,6 +24,12 @@ export interface IFaq {
     answer: string;
 }
 
+export interface IText {
+    id: number;
+    text: string;
+}
+
+
 export interface IArticle {
     id: number;
     slug: string;
@@ -31,4 +37,5 @@ export interface IArticle {
     description: string;
     image: IImage;
     content: string;
+    category?: IText
 }
