@@ -11,6 +11,7 @@ import { strapiImage as si, strapiImage } from '@/lib/strapiImage';
 import { Link, usePathname } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 import { IImage, ILink, ILinkImage } from '@/lib/type';
+import MobileSearch from './MobileSearch';
 
 type Props = {
     leftNavBar: Navbar[];
@@ -54,9 +55,10 @@ export default function MobileNavigation({
     const [showIcon, setShowIcon] = useState(false);
     const [navId, setNavId] = useState(-1);
     const [menuId, setMenuId] = useState(-1);
+    const [showSearch, setShowSearch] = useState(false);
     const isIndex = pathname === '/';
     const nabBarList = [...leftNavBar, ...rightNavBar];
-    
+
     useMotionValueEvent(scrollY, 'change', (value) => {
         if (isIndex) {
             if (value > 100) {
@@ -94,12 +96,20 @@ export default function MobileNavigation({
                             ? 'border-b-[1px] border-b-gray-200 drop-shadow-xs'
                             : ''
                     }`}
-                    initial={{ backgroundColor: isIndex ? 'rgba(255,255,255,0)' : 'rgba(255,255,255,1)'}}
-                    animate={isIndex ? {
-                        backgroundColor: showBackground
-                            ? 'rgba(255,255,255,1)'
-                            : 'rgba(255,255,255,0)',
-                    }: {}}
+                    initial={{
+                        backgroundColor: isIndex
+                            ? 'rgba(255,255,255,0)'
+                            : 'rgba(255,255,255,1)',
+                    }}
+                    animate={
+                        isIndex
+                            ? {
+                                  backgroundColor: showBackground
+                                      ? 'rgba(255,255,255,1)'
+                                      : 'rgba(255,255,255,0)',
+                              }
+                            : {}
+                    }
                     transition={{
                         duration: 0.2,
                     }}
@@ -140,6 +150,7 @@ export default function MobileNavigation({
                         strokeWidth="1.5"
                         stroke="currentColor"
                         className="size-6"
+                        onClick={() => { setShowSearch(true) }}
                     >
                         <path
                             strokeLinecap="round"
@@ -204,6 +215,7 @@ export default function MobileNavigation({
                                     strokeWidth="1.5"
                                     stroke="currentColor"
                                     className="size-6"
+                                    onClick={() => { setShowSearch(true) }}
                                 >
                                     <path
                                         strokeLinecap="round"
@@ -352,7 +364,7 @@ export default function MobileNavigation({
                                             className={`py-2 flex items-center relative`}
                                             target={navbar?.link.target}
                                             href={navbar.link.URL}
-                                             onClick={() => setShowMenu(false)}
+                                            onClick={() => setShowMenu(false)}
                                         >
                                             {navbar.link?.text}
                                         </Link>
@@ -411,6 +423,13 @@ export default function MobileNavigation({
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            <MobileSearch
+                open={showSearch}
+                close={() => {
+                    setShowSearch(false);
+                }}
+            />
         </>
     );
 }
